@@ -1,0 +1,49 @@
+from fastapi import FastAPI, HTTPException, Query
+import aiohttp
+from fastapi.middleware.cors import CORSMiddleware
+from os import environ as env
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_headers=["*"],
+)
+
+
+client_session = aiohttp.ClientSession()
+
+
+@app.get("/get_np_API_cities")
+async def get_np_API_cities(city_name: str = Query(...)):
+    if not city_name:
+        raise HTTPException(status_code=400, detail="Missing city_name parameter")
+
+    url = f'{env["NP_API_URL"]}'
+    payload = {
+        'apiKey': f'{env["NP_API_KEY"]}',
+        'modelName': 'Address',
+        'calledMethod': 'searchSettlements',
+        'methodProperties': {
+            'CityName': city_name,
+            'Limit': 5,
+            'page': 1
+        },
+    }
+
+    try:
+        async with client_session.post(url, json=payload) as response:
+            response.raise_for_status()
+            response_json = await response.json()
+            return response_json
+
+    except aiohttp.ClientError as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    await client_session.close()
