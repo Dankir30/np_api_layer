@@ -19,9 +19,9 @@ services:
     build: .
     command: sh -c "uvicorn main:app --reload --port=9002  --host=0.0.0.0"
     ports:
-      - 8001:9002
-#    expose:
-#      - 9002
+#      - 8001:9002
+    expose:
+      - 9002
     networks:
       - fast_api_net
     volumes:
