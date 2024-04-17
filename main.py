@@ -12,9 +12,9 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://api.shop-garden.prizma-dev.online/"],
+    allow_origins=["https://shop-garden.prizma-dev.online", "http://localhost:8080"],
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["Content-Type", "Set-Cookie", "Access-Control-Allow-Headers", "Access-Control-Allow-Origin",
                    "Authorization"],
 )
@@ -45,7 +45,7 @@ async def get_np_API_cities(city_name: str = Query(...)):
         async with client_session.post(url, json=payload) as response:
             response.raise_for_status()
             response_json = await response.json()
-            return response_json
+            return response_json, {"Access-Control-Allow-Origin": "https://shop-garden.prizma-dev.online"}
 
     except aiohttp.ClientError as e:
         raise HTTPException(status_code=500, detail=str(e))
