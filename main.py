@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Query
+\from fastapi import FastAPI, HTTPException, Query
 import aiohttp
 from fastapi.middleware.cors import CORSMiddleware
 from os import environ as env
@@ -17,6 +17,7 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["*"],
 )
+
 
 client_session = aiohttp.ClientSession()
 
@@ -37,6 +38,7 @@ async def get_np_API_cities(city_name: str = Query(...)):
             'page': 1
         },
     }
+
 
     try:
         async with client_session.post(url, json=payload) as response:
