@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Query
 import aiohttp
-from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.cors import CORSMiddleware
 from os import environ as env
 from dotenv import load_dotenv
 
