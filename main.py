@@ -37,8 +37,7 @@ async def get_np_API_cities(city_name: str = Query(...)):
             'page': 1
         },
     }
-    for key, value in env.items():
-        print(key, ':', value)
+
     try:
         async with client_session.post(url, json=payload) as response:
             response.raise_for_status()
