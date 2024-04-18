@@ -9,7 +9,7 @@ services:
     restart: always
     image: nginx:1.23-alpine
     ports:
-      - 8001:443
+      - 8003:80
     volumes:
       - ./nginx_conf/default.conf:/etc/nginx/conf.d/default.conf
     networks:
@@ -17,11 +17,11 @@ services:
   web:
     restart: always
     build: .
-    command: sh -c "uvicorn main:app --reload --port=9002  --host=0.0.0.0"
-#    ports:
-##      - 8001:9002
+    command: sh -c "uvicorn main:app --reload --port=8001  --host=0.0.0.0"
+    ports:
+      - 8001:8001
     expose:
-      - 9002
+      - 8001
     networks:
       - fast_api_net
     volumes:
