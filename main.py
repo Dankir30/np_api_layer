@@ -19,7 +19,7 @@ app.add_middleware(
 client_session = aiohttp.ClientSession()
 
 
-@app.get("/get_np_API_cities")
+@app.get("/get_np_API_cities/")
 async def get_np_API_cities(city_name: str = Query(...)):
     if not city_name:
         raise HTTPException(status_code=400, detail="Missing city_name parameter")
