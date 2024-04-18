@@ -40,7 +40,7 @@ async def get_np_API_cities(city_name: str = Query(...)):
         async with client_session.post(url, json=payload) as response:
             response.raise_for_status()
             response_json = await response.json()
-            return response_json, {"Access-Control-Allow-Origin": "https://shop-garden.prizma-dev.online"}
+            return response_json
 
     except aiohttp.ClientError as e:
         raise HTTPException(status_code=500, detail="something wrong")
