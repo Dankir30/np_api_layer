@@ -1,3 +1,5 @@
+import json
+
 from fastapi import FastAPI, HTTPException, Query
 import aiohttp
 from os import environ as env
@@ -15,6 +17,9 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=['*'],
 )
+with open('nova_post_fullinfo.json', 'r', encoding='utf-8') as f:
+    np_row_data = json.load(f)
+
 
 client_session = aiohttp.ClientSession()
 
@@ -44,6 +49,14 @@ async def get_np_API_cities(city_name: str = Query(...)):
 
     except aiohttp.ClientError as e:
         raise HTTPException(status_code=500, detail="something wrong")
+
+
+@app.get("/get_np_API_data/")
+async def get_np_API_warehouses():
+    if not np_row_data:
+        raise HTTPException(status_code=400, detail="something wrong with np json")
+
+    return np_row_data
 
 
 @app.on_event("shutdown")
