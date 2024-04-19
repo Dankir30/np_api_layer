@@ -1,4 +1,5 @@
 import json
+from pprint import pprint
 
 from fastapi import FastAPI, HTTPException, Query
 import aiohttp
@@ -17,10 +18,20 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=['*'],
 )
-with open('nova_post_fullinfo.json', 'r', encoding='utf-8') as f:
-    np_row_data = json.load(f)
 
 
+def fill_hash_table():
+    with open('nova_post_fullinfo.json', 'r', encoding='utf-8') as f:
+        np_row_data = json.load(f)
+    hash_table = {}
+    for obj in np_row_data:
+        city_ref = obj['cityRef']
+        hash_table[city_ref] = obj
+    print('ок хеш')
+    return hash_table
+
+
+hash_table_info = fill_hash_table()
 client_session = aiohttp.ClientSession()
 
 
@@ -51,12 +62,15 @@ async def get_np_API_cities(city_name: str = Query(...)):
         raise HTTPException(status_code=500, detail="something wrong")
 
 
-@app.get("/get_np_API_data/")
-async def get_np_API_warehouses():
-    if not np_row_data:
-        raise HTTPException(status_code=400, detail="something wrong with np json")
+@app.get("/get_np_API_warehouses/")
+async def get_np_API_warehouses(city_ref: str = Query(...)):
+    if not city_ref:
+        raise HTTPException(status_code=400, detail="something wrong with city_ref")
 
-    return np_row_data
+    warehouses = hash_table_info[city_ref]
+    print(warehouses)
+
+    return warehouses
 
 
 @app.on_event("shutdown")
