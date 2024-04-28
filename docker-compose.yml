@@ -18,12 +18,11 @@ services:
     restart: always
     build: .
     command: sh -c "uvicorn main:app --reload --port=8001  --host=0.0.0.0"
-
     expose:
       - 8001
     networks:
       - fast_api_net
     volumes:
       - .:/app
-
+      - /root/test_shop/shop_garden/storage/static_prod/jsons/nova_post_fullinfo.json:/app/nova_post_fullinfo.json:ro # update server path for production server
 
