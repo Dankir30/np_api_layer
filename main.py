@@ -13,7 +13,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://shop-garden.prizma-dev.online", "http://localhost:8000", "http://127.0.0.1:8000"],
+    allow_origins=[f"https://{env.get('DOMAIN')}", "http://localhost:8000", "http://127.0.0.1:8000"],
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=['*'],
