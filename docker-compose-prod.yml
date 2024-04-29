@@ -24,5 +24,4 @@ services:
       - fast_api_net
     volumes:
       - .:/app
-      - /root/test_shop/shop_garden/storage/static_prod/jsons/nova_post_fullinfo.json:/app/nova_post_fullinfo.json:ro # update server path for production server
-
+      - /path/to/nova_post_fullinfo/prod:/app/nova_post_fullinfo.json:ro
