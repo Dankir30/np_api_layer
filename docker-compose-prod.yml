@@ -1,0 +1,28 @@
+version: '3'
+
+networks:
+  fast_api_net:
+    driver: bridge
+
+services:
+  nginx:
+    restart: always
+    image: nginx:1.23-alpine
+    ports:
+      - 8003:80
+    volumes:
+      - ./nginx_conf/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - fast_api_net
+  web:
+    restart: always
+    build: .
+    command: sh -c "uvicorn main:app --reload --port=8001  --host=0.0.0.0"
+    expose:
+      - 8001
+    networks:
+      - fast_api_net
+    volumes:
+      - .:/app
+      - /path/to/nova_post_fullinfo/prod:/app/nova_post_fullinfo.json:ro
+
