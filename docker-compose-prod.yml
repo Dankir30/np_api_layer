@@ -25,4 +25,3 @@ services:
     volumes:
       - .:/app
       - /path/to/nova_post_fullinfo/prod:/app/nova_post_fullinfo.json:ro
-
