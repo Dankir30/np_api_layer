@@ -68,7 +68,6 @@ async def get_np_API_warehouses(city_ref: str = Query(...)):
         raise HTTPException(status_code=400, detail="something wrong with city_ref")
 
     warehouses = hash_table_info[city_ref]
-    print(warehouses)
 
     return warehouses
 
